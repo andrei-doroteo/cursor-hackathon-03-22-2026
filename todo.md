@@ -91,15 +91,15 @@ Build these in isolation — they are pure presentational components with no dat
 - [x] `src/components/ui/StarRating.tsx` — Renders 1–5 stars; accepts `value` and optional `onChange` for interactive mode vs. display mode
 - [x] `src/components/ui/ProductCard.tsx` — Card with product image, name, price, average star rating, and business name; links to `/marketplace/[id]`; uses `StarRating`
 - [ ] `src/components/ui/NewsReportCard.tsx` — Card displaying report title, body excerpt, generated date, and a list of clickable source article links
-- [ ] `src/components/layout/Footer.tsx` — Simple footer with logo, tagline, and copyright
-- [ ] `src/components/layout/Navbar.tsx` — Top nav: logo, role-aware links (business dashboard vs. marketplace), auth state (sign in / user menu with sign out); uses NextAuth `useSession`
+- [x] `src/components/layout/Footer.tsx` — Simple footer with logo, tagline, and copyright
+- [x] `src/components/layout/Navbar.tsx` — Top nav: logo, role-aware links (business dashboard vs. marketplace), auth state (sign in / user menu with sign out); uses NextAuth `useSession`
 
 ---
 
 ## Phase 8 — Root Layout & Public Pages (depends on: Phase 7 + Phase 4)
 
-- [ ] `src/app/layout.tsx` — Root layout: wraps app in `SessionProvider`, renders `<Navbar>` and `<Footer>`, applies global Tailwind styles
-- [ ] `src/app/page.tsx` — Landing page: full-width hero with tagline, two CTA buttons ("I'm a Business" → `/register?type=business`, "Shop Canadian" → `/register?type=customer`), brief feature highlights section
+- [x] `src/app/layout.tsx` — Root layout: wraps app in `SessionProvider`, renders `<Navbar>` and `<Footer>`, applies global Tailwind styles
+- [x] `src/app/page.tsx` — Landing page: full-width hero with tagline, two CTA buttons ("I'm a Business" → `/register?type=business`, "Shop Canadian" → `/register?type=customer`), brief feature highlights section
 - [ ] `src/app/login/page.tsx` — Email + password form; calls NextAuth `signIn('credentials')`; on success redirects to role-appropriate dashboard
 - [ ] `src/app/register/page.tsx` — Role selector tabs (Business / Customer) + registration form; `POST`s to `/api/auth/register`; auto-signs in and redirects on success
 
