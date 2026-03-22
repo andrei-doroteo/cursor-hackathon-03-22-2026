@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
+  "name": "maple-tariff-disruptors",
   "version": "0.1.0",
   "private": true,
+  "description": "Canadian platform for businesses to navigate tariff-related economic swings and for customers to find and buy Canadian products.",
   "type": "module",
   "scripts": {
     "build": "next build",
