@@ -12,8 +12,13 @@ export type ProductFilters = {
   page?: number;
 };
 
+/** Marketplace row: product + business + average review score (0 when none). */
+export type ProductListItem = ProductWithBusiness & {
+  averageRating: number;
+};
+
 export type GetProductsResult = {
-  products: ProductWithBusiness[];
+  products: ProductListItem[];
   total: number;
   page: number;
   pageSize: number;
@@ -70,7 +75,7 @@ export async function getProducts(
   const where: Prisma.ProductWhereInput =
     conditions.length > 0 ? { AND: conditions } : {};
 
-  const [products, total] = await Promise.all([
+  const [rows, total] = await Promise.all([
     db.product.findMany({
       where,
       include: { business: true },
@@ -80,6 +85,27 @@ export async function getProducts(
     }),
     db.product.count({ where }),
   ]);
+
+  const avgRows =
+    rows.length > 0
+      ? await db.review.groupBy({
+          by: ["productId"],
+          where: { productId: { in: rows.map((p) => p.id) } },
+          _avg: { rating: true },
+        })
+      : [];
+
+  const avgByProduct = new Map(
+    avgRows.map((r) => [
+      r.productId,
+      r._avg.rating != null ? Number(r._avg.rating) : 0,
+    ]),
+  );
+
+  const products: ProductListItem[] = rows.map((p) => ({
+    ...p,
+    averageRating: avgByProduct.get(p.id) ?? 0,
+  }));
 
   return { products, total, page, pageSize };
 }
