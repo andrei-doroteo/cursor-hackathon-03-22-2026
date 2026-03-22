@@ -50,8 +50,8 @@ These are pure utility modules with no UI or routing dependencies.
 
 Reusable data-access functions called by API routes. Each file should use Prisma directly and never import route-level code.
 
-- [ ] `src/lib/actions/products.ts` — `getProducts(filters: { search?: string; tag?: string; page?: number })`, `getProductById(id)`, `createProduct(data)`, `updateProduct(id, data)`, `deleteProduct(id)`
-- [ ] `src/lib/actions/reviews.ts` — `getReviewsForProduct(productId)`, `createReview(productId, customerId, data)`
+- [x] `src/lib/actions/products.ts` — `getProducts(filters: { search?: string; tag?: string; page?: number })`, `getProductById(id)`, `createProduct(data)`, `updateProduct(id, data)`, `deleteProduct(id)`
+- [x] `src/lib/actions/reviews.ts` — `getReviewsForProduct(productId)`, `createReview(productId, customerId, data)`
 - [ ] `src/lib/actions/news.ts` — `getRelevantNewsForBusiness(businessProfile)` (queries `NewsArticle` by matching tags), `saveBusinessReport(businessId, report)`
 - [ ] `src/lib/actions/business.ts` — `getBusinessProfile(userId)`, `upsertBusinessProfile(userId, data)`, `getBusinessReports(businessId)`
 
