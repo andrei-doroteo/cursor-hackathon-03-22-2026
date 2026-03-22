@@ -11,7 +11,8 @@ import { db } from "~/server/db";
 
 /**
  * NextAuth configuration used by the App Router API route and server helpers.
- * Credentials sign-in uses username + password verified with bcrypt against `User.passwordHash`.
+ * Credentials sign-in uses the `username` credential (email or legacy username) + password,
+ * verified with bcrypt against `User.passwordHash`. Email addresses are matched case-insensitively.
  * JWT and session carry `id`, `role`, and `username` for authorization (business vs customer).
  */
 declare module "next-auth" {
@@ -59,10 +60,21 @@ export const authOptions = {
         if (!parsed.success) return null;
 
         const { username, password } = parsed.data;
+        const input = username.trim();
+        const normalizedEmail = input.toLowerCase();
 
-        const user = await db.user.findUnique({
-          where: { username },
-        });
+        const user = input.includes("@")
+          ? await db.user.findFirst({
+              where: {
+                OR: [
+                  { email: normalizedEmail },
+                  { username: normalizedEmail },
+                ],
+              },
+            })
+          : await db.user.findUnique({
+              where: { username: input },
+            });
         if (!user) return null;
 
         const valid = await compare(password, user.passwordHash);

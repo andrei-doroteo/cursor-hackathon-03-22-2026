@@ -6,11 +6,7 @@ import { UserRole } from "../../../../../generated/prisma";
 import { db } from "~/server/db";
 
 const registerSchema = z.object({
-  username: z
-    .string()
-    .min(3)
-    .max(32)
-    .regex(/^[a-zA-Z0-9_]+$/),
+  email: z.string().email().max(254),
   password: z.string().min(8).max(128),
   role: z.nativeEnum(UserRole).optional(),
 });
@@ -31,15 +27,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const { username, password, role } = parsed.data;
+  const { email, password, role } = parsed.data;
+  const emailNormalized = email.trim().toLowerCase();
   const passwordHash = await hash(password, 12);
+  const nameFromEmail = emailNormalized.split("@")[0] ?? emailNormalized;
 
   try {
     const user = await db.user.create({
       data: {
-        username,
+        username: emailNormalized,
+        email: emailNormalized,
         passwordHash,
-        name: username,
+        name: nameFromEmail,
         role: role ?? UserRole.CUSTOMER,
       },
       select: { id: true, username: true, role: true },
@@ -53,7 +52,7 @@ export async function POST(request: Request) {
       (e as { code: string }).code === "P2002";
     if (isUniqueViolation) {
       return NextResponse.json(
-        { error: "Username already taken" },
+        { error: "An account with this email already exists." },
         { status: 409 },
       );
     }
