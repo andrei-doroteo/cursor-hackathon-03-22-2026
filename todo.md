@@ -109,6 +109,8 @@ Build these in isolation — they are pure presentational components with no dat
 
 Build components before the pages that render them.
 
+- [ ] `src/components/business/OnboardingForm.tsx` — Multi-step wizard: Step 1 company name + industry, Step 2 suppliers, Step 3 mission/description; `POST`s to `/api/business/onboarding` on final submit
+- [ ] `src/app/business/onboarding/page.tsx` — Server-checks if `BusinessProfile` already complete (redirect to dashboard if so); renders `OnboardingForm`
 - [x] `src/components/business/OnboardingForm.tsx` — Multi-step wizard: Step 1 company name + industry, Step 2 suppliers, Step 3 mission/description; `POST`s to `/api/business/onboarding` on final submit
 - [x] `src/app/business/onboarding/page.tsx` — Server-checks if `BusinessProfile` already complete (redirect to dashboard if so); renders `OnboardingForm`
 - [x] `src/components/business/NewsReportPanel.tsx` — Displays the most recent `BusinessNewsReport` via `NewsReportCard`; "Generate New Report" button triggers `POST /api/business/news-report`; shows loading state while LLM runs
